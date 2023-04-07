@@ -127,7 +127,7 @@ void detect_virus(char *buffer, unsigned int size, link *virus_list) {
    // while (virus_list != NULL) {
         for (i = 0; i < size; i++) {
             if (memcmp(buffer + i, virus_list->vir->sig, virus_list->vir->SigSize) == 0) {
-                printf("Virus found starting at byte location %d\n", i);
+                printf("Virus found starting at byte location 0x%02X\n", i);
                 printf("Virus name: %s\n", virus_list->vir->virusName);
                 printf("Virus signature size: %d\n", virus_list->vir->SigSize);
                 printf("\n");
