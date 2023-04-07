@@ -130,6 +130,7 @@ void detect_virus(char *buffer, unsigned int size, link *virus_list) {
                 printf("Virus found starting at byte location %d\n", i);
                 printf("Virus name: %s\n", virus_list->vir->virusName);
                 printf("Virus signature size: %d\n", virus_list->vir->SigSize);
+                printf("\n");
             }
         }
         //virus_list = virus_list->nextVirus;
@@ -146,6 +147,7 @@ void detect_viruses(){
     FILE * fileToDetectVirusesFrom = fopen(str, "r");
     if (fileToDetectVirusesFrom == NULL){
         printf("%s", "No such file!\n");
+        list_free(list);
         exit(1);
     }
     fread(buffer, bufSize, 1, fileToDetectVirusesFrom);
@@ -159,10 +161,10 @@ void detect_viruses(){
 }
 
 void neutralize_virus(char *fileName, int signatureOffset){
-    char *RET_near = "C3";
-    FILE * fileToClean = fopen(fileName, "r+b");
+    unsigned char RET_near = 0xC3;
+    FILE * fileToClean = fopen(fileName, "r+");
     fseek(fileToClean, signatureOffset, SEEK_SET);
-    fwrite(RET_near, 1, sizeof(RET_near), fileToClean);
+    fwrite(&RET_near, 1, 1, fileToClean);
     fclose(fileToClean);
 }
 
@@ -176,6 +178,7 @@ void fix_file(){
     FILE * fileToClean = fopen(str, "r");
     if (fileToClean == NULL){
         printf("%s", "No such file!\n");
+        list_free(list);
         exit(1);
     }
     fread(buffer, bufSize, 1, fileToClean);
